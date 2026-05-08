@@ -28,3 +28,5 @@ pnpm-debug.log*
 
 # Ebook source (word doc)
 *.docx
+
+.vercel
