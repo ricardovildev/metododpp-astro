@@ -3,6 +3,7 @@ import Base from './Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CourseAd from '../components/CourseAd.astro';
+import CalendlyAd from '../components/CalendlyAd.astro';
 
 interface Props {
   title: string;
@@ -11,9 +12,10 @@ interface Props {
   category: string;
   tags?: string[];
   image?: string;
+  cta?: 'course' | 'calendly' | 'both';
 }
 
-const { title, description, pubDate, category, tags = [], image } = Astro.props;
+const { title, description, pubDate, category, tags = [], image, cta = 'course' } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('pt-BR', {
   day: 'numeric',
@@ -63,7 +65,8 @@ const readingTimeWords = 200; // estimativa, pode ser calculada dinamicamente
 
       <slot />
 
-      <CourseAd variant="end" />
+      {(cta === 'course' || cta === 'both') && <CourseAd variant="end" />}
+      {(cta === 'calendly' || cta === 'both') && <CalendlyAd variant="end" />}
 
       <!-- AdSense slot — final do artigo -->
       <!--
@@ -89,6 +92,16 @@ const readingTimeWords = 200; // estimativa, pode ser calculada dinamicamente
             Garantir acesso →
           </a>
           <div class="sidebar-cta-guarantee">🛡️ 7 dias de garantia</div>
+        </div>
+
+        <div class="sidebar-calendly">
+          <div class="sidebar-calendly-tag">◆ Sistema · Fluxy</div>
+          <div class="sidebar-calendly-title">Ver o sistema</div>
+          <p class="sidebar-calendly-desc">Apresentação gratuita de 30 min para donos e gestores de construtoras.</p>
+          <a href="https://calendly.com/josericardovj/demonstracao-fluxy" class="sidebar-calendly-btn" target="_blank" rel="noopener">
+            Agendar demonstração →
+          </a>
+          <div class="sidebar-calendly-note">📅 Online · Sem compromisso</div>
         </div>
 
         <!-- AdSense slot — sidebar -->
@@ -263,6 +276,38 @@ const readingTimeWords = 200; // estimativa, pode ser calculada dinamicamente
   }
   .sidebar-cta-btn:hover { opacity: 0.88; }
   .sidebar-cta-guarantee {
+    font-family: var(--font-cond); font-size: 0.62rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint);
+  }
+  .sidebar-calendly {
+    background: #0d0d0d; border: 1px solid #272727;
+    border-top: 3px solid var(--amber);
+    border-radius: 4px; padding: 22px 18px;
+    text-align: center;
+  }
+  .sidebar-calendly-tag {
+    font-family: var(--font-cond); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 6px;
+  }
+  .sidebar-calendly-title {
+    font-family: var(--font-display); font-size: 1.6rem;
+    letter-spacing: 0.04em; color: #fff; margin-bottom: 8px;
+  }
+  .sidebar-calendly-desc {
+    font-size: 0.78rem; color: var(--muted);
+    line-height: 1.55; margin-bottom: 14px;
+  }
+  .sidebar-calendly-btn {
+    display: block; background: var(--amber); color: #000;
+    font-family: var(--font-cond); font-size: 0.82rem;
+    font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 11px 16px; border-radius: 3px;
+    text-decoration: none; margin: 0 0 8px;
+    transition: opacity 0.15s;
+  }
+  .sidebar-calendly-btn:hover { opacity: 0.88; }
+  .sidebar-calendly-note {
     font-family: var(--font-cond); font-size: 0.62rem;
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint);
   }
