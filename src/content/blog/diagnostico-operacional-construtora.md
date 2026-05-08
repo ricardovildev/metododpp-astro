@@ -23,7 +23,7 @@ Existe uma pressão natural em ambientes operacionais por soluções rápidas. Q
 
 O problema é que agir rápido sem diagnóstico raramente resolve. Às vezes piora — porque você adiciona uma camada nova de complexidade sobre um processo que já não funciona.
 
-O diagnóstico correto leva tempo. Mas ele é a diferença entre gastar R$ 1.500 por mês em um software que ninguém usa e construir um fluxo que a equipe adota em semanas.
+O diagnóstico correto leva tempo. Mas ele é a diferença entre gastar R$ 3.500,00 por mês em um software que ninguém usa e construir um fluxo que a equipe adota em semanas.
 
 ---
 
