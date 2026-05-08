@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Barlow+Condensed:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg:      #0d0d0d;
+  --bg2:     #121212;
+  --bg3:     #171717;
+  --surface: #1c1c1c;
+  --border:  #272727;
+  --text:    #ffffff;
+  --muted:   #c8c8c8;
+  --faint:   #787878;
+  --orange:  #f56c00;
+  --amber:   #f5a800;
+  --radius:  3px;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-cond:    'Barlow Condensed', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }

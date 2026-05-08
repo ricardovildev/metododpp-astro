@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Do Caos ao Sistema na Construção Civil — Método DPP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300italic;1,400italic&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:      #0d0d0d;
+      --bg2:     #121212;
+      --surface: #1c1c1c;
+      --border:  #272727;
+      --text:    #ffffff;
+      --muted:   #9a9a9a;
+      --faint:   #404040;
+      --orange:  #f56c00;
+      --amber:   #f5a800;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+      --font-cond:    'Barlow Condensed', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    /* ── PAGE WRAPPER — simula página A4 em tela ── */
+    .page-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* ── CAPA ── */
+    .cover {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+      page-break-after: always;
+    }
+
+    .cover-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 52px 52px;
+      opacity: 0.22;
+    }
+
+    .cover-glow {
+      position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(245,108,0,0.12) 0%, transparent 65%);
+    }
+
+    .cover-top-bar {
+      position: relative; z-index: 1;
+      background: var(--orange);
+      padding: 12px 52px;
+      font-family: var(--font-cond);
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase; color: #fff;
+    }
+
+    .cover-body {
+      position: relative; z-index: 1;
+      padding: 64px 52px 52px;
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .cover-eyebrow {
+      font-family: var(--font-cond);
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cover-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--orange); }
+
+    .cover-title {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 11vw, 8rem);
+      line-height: 0.88; letter-spacing: 0.02em;
+    }
+    .cover-title .t1 { display: block; color: var(--text); -webkit-text-stroke: 1px rgba(255,255,255,0.15); }
+    .cover-title .t2 { display: block; color: var(--text); }
+    .cover-title .t3 { display: block; color: var(--orange); }
+
+    .cover-subtitle {
+      font-family: var(--font-cond);
+      font-size: 1.05rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); margin-top: 18px; max-width: 480px;
+    }
+
+    .cover-divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--amber));
+      margin: 28px 0;
+    }
+
+    .cover-desc {
+      font-size: 1rem; color: var(--muted); font-weight: 300;
+      max-width: 460px; line-height: 1.7;
+      font-style: italic;
+    }
+
+    .cover-bottom {
+      position: relative; z-index: 1;
+      padding: 32px 52px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .cover-author { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.06em; color: var(--text); }
+    .cover-author-sub { font-family: var(--font-cond); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+    .cover-year { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.1em; color: var(--faint); }
+
+    /* ── SECTION BREAK ── */
+    .page-section {
+      padding: 72px 52px;
+      border-bottom: 1px solid var(--border);
+      page-break-inside: avoid;
+    }
+
+    .page-section--alt { background: var(--bg2); }
+
+    /* ── CHAPTER HEADER ── */
+    .chapter-label {
+      font-family: var(--font-cond); font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .chapter-label::before { content: ''; display: block; width: 24px; height: 2px; background: var(--orange); }
+
+    .chapter-num {
+      font-family: var(--font-display);
+      font-size: 7rem; line-height: 1; letter-spacing: 0.02em;
+      color: rgba(245,108,0,0.1);
+      position: absolute; right: 52px; top: 52px;
+    }
+
+    .chapter-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1; letter-spacing: 0.02em;
+      margin-bottom: 28px;
+    }
+
+    .chapter-title em { color: var(--orange); font-style: normal; }
+
+    /* ── BODY TEXT ── */
+    .body-text { font-size: 1rem; color: var(--text); line-height: 1.82; font-weight: 300; }
+    .body-text + .body-text { margin-top: 16px; }
+    .body-text strong { color: var(--orange); font-weight: 600; }
+    .body-text em { color: var(--muted); font-style: italic; }
+
+    /* ── DESTAQUE ── */
+    .destaque {
+      margin: 32px 0;
+      border-left: 3px solid var(--orange);
+      padding: 18px 24px;
+      background: rgba(245,108,0,0.05);
+      border-radius: 0 3px 3px 0;
+    }
+    .destaque p {
+      font-family: var(--font-body); font-size: 1.05rem;
+      font-style: italic; font-weight: 300;
+      color: var(--text); line-height: 1.75;
+    }
+
+    /* ── LISTA ── */
+    .lista { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+    .lista li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.97rem; color: var(--text); font-weight: 300; line-height: 1.65; }
+    .lista li::before { content: '—'; color: var(--orange); flex-shrink: 0; font-weight: 600; line-height: 1.65; }
+
+    /* ── INSIGHT BOX ── */
+    .insight-box {
+      margin: 36px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--amber);
+      border-radius: 3px;
+      padding: 28px 30px;
+    }
+    .insight-label {
+      font-family: var(--font-cond); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 10px;
+    }
+    .insight-text {
+      font-family: var(--font-display); font-size: clamp(1.3rem, 3vw, 1.9rem);
+      line-height: 1.1; letter-spacing: 0.02em; color: #fff;
+    }
+    .insight-text span { color: var(--orange); }
+
+    /* ── MÉTODO — STEPS ── */
+    .method-steps { display: flex; flex-direction: column; gap: 0; margin: 36px 0; page-break-inside: avoid; break-inside: avoid; }
+    .method-step { page-break-inside: avoid; break-inside: avoid; }
+    .method-step {
+      display: grid; grid-template-columns: 64px 1fr;
+      gap: 0 20px; padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .method-step:first-child { border-top: 1px solid var(--border); }
+    .ms-num {
+      font-family: var(--font-display); font-size: 2.8rem; line-height: 1;
+      color: var(--orange); text-align: center; padding-top: 2px;
+    }
+    .ms-title {
+      font-family: var(--font-cond); font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .ms-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+    /* ── PRÓXIMO PASSO ── */
+    .proximo-passo {
+      background: linear-gradient(135deg, #160800 0%, var(--bg2) 100%);
+      border: 1px solid rgba(245,108,0,0.25);
+      border-top: 3px solid var(--orange);
+      border-radius: 3px;
+      padding: 44px 44px 48px;
+      text-align: center;
+      margin-top: 52px;
+    }
+    .pp-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1; letter-spacing: 0.02em; margin-bottom: 14px;
+    }
+    .pp-desc { font-size: 1rem; color: var(--muted); line-height: 1.75; font-weight: 300; max-width: 480px; margin: 0 auto 32px; }
+    .pp-desc strong { color: var(--orange); font-weight: 500; }
+
+    .pp-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .pp-option {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 3px; padding: 16px 20px; text-align: left;
+    }
+    .pp-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .pp-option-title { font-family: var(--font-cond); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--orange); margin-bottom: 3px; }
+    .pp-option-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
+
+    .btn-pp {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--orange); color: #fff;
+      font-family: var(--font-cond); font-size: 1.1rem; font-weight: 800;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 16px 40px; border-radius: 3px;
+      text-decoration: none;
+      box-shadow: 0 4px 28px rgba(245,108,0,0.35);
+    }
+    .btn-pp-amber {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: var(--amber);
+      font-family: var(--font-cond); font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 14px 36px; border-radius: 3px;
+      border: 2px solid var(--amber); text-decoration: none;
+      margin-top: 10px;
+    }
+    .btn-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .btn-note { font-family: var(--font-cond); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── CONTRA-CAPA ── */
+    .back-cover {
+      min-height: 50vh;
+      background: var(--bg);
+      padding: 64px 52px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 28px;
+    }
+    .bc-left { }
+    .bc-logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.1em; color: var(--text); }
+    .bc-logo em { color: var(--orange); font-style: normal; }
+    .bc-copy { font-family: var(--font-cond); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+    .bc-right { text-align: right; }
+    .bc-email { font-family: var(--font-cond); font-size: 0.85rem; letter-spacing: 0.1em; color: var(--muted); text-decoration: none; }
+    .bc-email:hover { color: var(--orange); }
+    .bc-divider { width: 100%; height: 1px; background: var(--border); }
+
+    /* ── SEPARADOR DE SEÇÃO ── */
+    .sep {
+      display: flex; align-items: center; gap: 14px;
+      margin: 28px 0;
+    }
+    .sep-line { flex: 1; height: 1px; background: var(--border); }
+    .sep-dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
+
+    @media (max-width: 640px) {
+      .page-section { padding: 48px 24px; }
+      .cover-body { padding: 44px 24px 36px; }
+      .cover-bottom { padding: 24px; }
+      .chapter-num { display: none; }
+      .proximo-passo { padding: 32px 24px 36px; }
+      .back-cover { padding: 40px 24px; }
+    }
+
+    @media print {
+      body { background: #0d0d0d; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page-section { page-break-inside: avoid; }
+      .cover { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ═══ CAPA ═══════════════════════════════════════════════════ -->
+  <div class="cover">
+    <div class="cover-grid"></div>
+    <div class="cover-glow"></div>
+
+    <div class="cover-top-bar">Método DPP · Jose Ricardo · 2026</div>
+
+    <div class="cover-body">
+      <div class="cover-eyebrow">Ebook</div>
+      <h1 class="cover-title">
+        <span class="t1">Do Caos</span>
+        <span class="t2">ao Sistema</span>
+        <span class="t3">na construção civil</span>
+      </h1>
+      <div class="cover-subtitle">
+        Como identificar gargalos operacionais, estruturar processos<br>
+        e transformar problemas reais em soluções digitais
+      </div>
+      <div class="cover-divider"></div>
+      <p class="cover-desc">
+        "Se você enxerga problemas que ninguém resolve — na sua empresa ou ao seu redor —<br>
+        este livro é sobre o que acontece quando você decide estruturar a solução."
+      </p>
+    </div>
+
+    <div class="cover-bottom">
+      <div>
+        <div class="cover-author">Jose Ricardo</div>
+        <div class="cover-author-sub">Estrategista em Processos, Sistemas e IA Aplicada</div>
+      </div>
+      <div class="cover-year">2026</div>
+    </div>
+  </div>
+
+  <!-- ═══ INTRODUÇÃO ══════════════════════════════════════════════ -->
+  <div class="page-section" style="position:relative;">
+    <div class="chapter-num">00</div>
+    <div class="chapter-label">Introdução</div>
+    <h2 class="chapter-title">Como<br><em>tudo começou</em></h2>
+
+    <p class="body-text">
+      Eu não comecei pela tecnologia. Comecei pelo problema. Fui contratado para trabalhar no financeiro de uma construtora.
+      Meu trabalho era montar relatórios — e para isso, precisava acessar constantemente
+      o sistema que a empresa utilizava para comunicação interna entre os setores.
+    </p>
+    <p class="body-text">
+      Era ali que estavam os arquivos, os comprovantes, as informações. E esse processo... era caótico.
+      Toda vez que eu precisava de um documento, era difícil encontrar. As informações estavam espalhadas.
+      Nada era realmente organizado.
+    </p>
+    <p class="body-text">
+      Enquanto isso, minhas colegas do financeiro precisavam enviar comprovante por comprovante manualmente.
+      Era repetitivo. Demorado. Ineficiente. E foi aí que algo começou a me incomodar de verdade.
+    </p>
+
+    <div class="destaque">
+      <p>
+        Porque, na minha cabeça, aquilo não fazia sentido. Eu já tinha imaginado um modelo que centralizasse
+        tudo em um único fluxo organizado — com responsáveis claros, registros rastreáveis e processos definidos.
+        A tecnologia era o meio. O problema era o ponto de partida.
+      </p>
+    </div>
+
+    <p class="body-text">
+      Com a evolução da inteligência artificial, percebi que era possível usar a IA como ferramenta de apoio
+      para estruturar soluções digitais a partir do entendimento do processo — antes da tecnologia.
+      E foi exatamente isso que eu fiz.
+    </p>
+    <p class="body-text">
+      Neste livro, você vai entender como saí de um papel operacional para estruturar uma solução digital real —
+      uma solução que <strong>substituiu ferramentas já contratadas</strong> — e como esse processo
+      se transformou em um modelo de negócio.
+    </p>
+
+    <div style="page-break-inside: avoid; break-inside: avoid;">
+      <div class="sep"><div class="sep-line"></div><div class="sep-dot"></div><div class="sep-line"></div></div>
+      <p class="body-text" style="font-style:italic;  color:#fff; opacity:1;">
+        <h2 class="chapter-title">Para Donos,<br><em>Gestores e Empreendedores</em></h2>
+        Talvez você não esteja no operacional. Mas você vê os problemas todos os dias.
+        O Método DPP não depende de formação técnica específica. Ele depende de: visão do problema,
+        clareza sobre o processo real e disposição para estruturar uma solução.
+        A IA entra como ferramenta — não como substituto do pensamento.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ CAPÍTULO 01 ═════════════════════════════════════════════ -->
+  <div class="page-section page-section--alt" style="position:relative;">
+    <div class="chapter-num">01</div>
+    <div class="chapter-label">Capítulo 01</div>
+    <h2 class="chapter-title">🧩 O Caos<br><em>nas Empresas</em></h2>
+
+    <p class="body-text">
+      Se você trabalha em qualquer empresa, já viu isso. Processos que deveriam ser simples — mas não são.
+      No meu caso, a empresa utilizava o Monday para organizar a comunicação interna. E já estava em
+      processo de migração para o ClickUp. Mas o problema nunca foi a ferramenta.
+      <strong>O problema era o processo.</strong>
+    </p>
+
+    <div class="insight-box">
+      <div class="insight-label">O que eu percebi</div>
+      <p class="insight-text">O caos não vem da falta de ferramenta.<br><span>Vem da falta de estrutura.</span></p>
+    </div>
+
+    <p class="body-text">Os sintomas que eu via todos os dias:</p>
+
+    <ul class="lista">
+      <li>Informações espalhadas sem centralização</li>
+      <li>Solicitações de compra vindas da obra sem padrão</li>
+      <li>Engenheiros e financeiro desalinhados</li>
+      <li>Pagamentos sendo feitos sem rastreabilidade clara</li>
+      <li>Arquivos difíceis de localizar</li>
+      <li>Comunicação descentralizada e dependência de pessoas</li>
+    </ul>
+
+    <p class="body-text">
+      No financeiro, isso era ainda mais crítico. Para algo simples como anexar comprovantes,
+      o processo era manual. Um por um. Sem escala. Sem inteligência. Sem controle.
+    </p>
+    <p class="body-text">
+      E isso gera um impacto enorme: tempo perdido, retrabalho, erros, falta de visibilidade
+      e decisões ruins.
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 02 ═════════════════════════════════════════════ -->
+  <div class="page-section" style="position:relative;">
+    <div class="chapter-num">02</div>
+    <div class="chapter-label">Capítulo 02</div>
+    <h2 class="chapter-title">💡 O<br><em>Insight</em></h2>
+
+    <p class="body-text">
+      O ponto de virada não foi técnico. Foi mental.
+    </p>
+    <p class="body-text">
+      Eu percebi que o problema não era falta de esforço das pessoas. Nem falta de sistema.
+      Era falta de fluxo. As empresas utilizam ferramentas, mas não organizam o processo.
+      <strong>E isso muda tudo.</strong>
+    </p>
+
+    <div class="destaque">
+      <p>
+        Foi nesse momento que uma ideia antiga voltou. Anos antes, eu já tinha imaginado um sistema
+        onde tudo passava por um fluxo central, cada etapa tinha um responsável, tudo ficava registrado
+        e nada se perdia.
+      </p>
+    </div>
+
+    <p class="body-text">
+      E agora, com a IA como ferramenta de apoio, eu podia finalmente estruturar isso.
+      Não como um atalho mágico — mas como <strong>acelerador para quem entende o problema</strong>.
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 03 ═════════════════════════════════════════════ -->
+  <div class="page-section page-section--alt" style="position:relative;">
+    <div class="chapter-num">03</div>
+    <div class="chapter-label">Capítulo 03</div>
+    <h2 class="chapter-title">🏗️ Começando<br><em>do Zero</em></h2>
+
+    <p class="body-text">
+      Eu não comecei com um sistema completo. Comecei pequeno.
+    </p>
+    <p class="body-text">
+      O primeiro problema que endereçei foi o processo de envio de comprovantes. Estruturei uma
+      solução simples e direcionada para aquele fluxo específico — e funcionou.
+      Simples. Mas <strong>extremamente útil</strong>. Foi a primeira validação real.
+    </p>
+
+    <div class="insight-box">
+      <div class="insight-label">A lição</div>
+      <p class="insight-text">Sem perfeição. Sem arquitetura ideal.<br><span>Com um objetivo claro: resolver um problema real.</span></p>
+    </div>
+
+    <p class="body-text">
+      A partir disso, comecei a estruturar o sistema maior. Cada módulo novo resolvia uma dor
+      específica que eu via acontecer todo dia.
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 04 ═════════════════════════════════════════════ -->
+  <div class="page-section" style="position:relative;">
+    <div class="chapter-num">04</div>
+    <div class="chapter-label">Capítulo 04</div>
+    <h2 class="chapter-title">⚠️ Erros e<br><em>Dificuldades</em></h2>
+
+    <p class="body-text">Nada foi fácil. Eu errei muito.</p>
+
+    <ul class="lista">
+      <li>Refiz etapas do processo do zero</li>
+      <li>Tomei decisões erradas de estrutura</li>
+      <li>Precisei voltar atrás várias vezes</li>
+      <li>Enfrentei dificuldades que não esperava</li>
+    </ul>
+
+    <p class="body-text">
+      Mas o maior desafio não foi técnico. Foi mental.
+    </p>
+
+    <div class="destaque">
+      <p>
+        Será que isso ia funcionar? Será que a empresa ia aceitar?
+        Será que eu conseguiria entregar algo usável?
+        Mesmo com dúvidas, eu continuei.
+        Porque o problema era real demais para ser ignorado.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ CAPÍTULO 05 ═════════════════════════════════════════════ -->
+  <div class="page-section page-section--alt" style="position:relative;">
+    <div class="chapter-num">05</div>
+    <div class="chapter-label">Capítulo 05</div>
+    <h2 class="chapter-title">⚙️ Construindo<br><em>um Sistema de Verdade</em></h2>
+
+    <p class="body-text">
+      Com o tempo, o sistema começou a ganhar forma. Mas não como uma ferramenta isolada.
+      E sim como uma <strong>estrutura</strong>.
+    </p>
+    <p class="body-text">O foco sempre foi um só: centralizar solicitações.</p>
+
+    <div class="insight-box">
+      <div class="insight-label">O Fluxo Central</div>
+      <p class="insight-text">Tudo entra por <span>um único ponto.</span><br>Tudo fica registrado.<br>Nada se perde.</p>
+    </div>
+
+    <p class="body-text">Na prática, dentro de uma construtora, esse fluxo organiza:</p>
+
+    <ul class="lista">
+      <li>Solicitações de compra vindas da obra</li>
+      <li>Pagamentos de fornecedores</li>
+      <li>Envio e rastreio de comprovantes</li>
+      <li>Comunicação entre obra e administrativo</li>
+    </ul>
+
+    <p class="body-text">
+      Isso muda completamente a operação. Sai o caos. Entra clareza operacional.
+      E isso não começa pela tecnologia. <strong>Começa pela estrutura do processo.</strong>
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 06 ═════════════════════════════════════════════ -->
+  <div class="page-section" style="position:relative;">
+    <div class="chapter-num">06</div>
+    <div class="chapter-label">Capítulo 06</div>
+    <h2 class="chapter-title">🧠 O Que Ninguém<br><em>Te Conta</em></h2>
+
+    <p class="body-text">Aqui está uma verdade que poucos falam: <strong>estruturar a solução digital é a parte mais simples.</strong></p>
+    <p class="body-text">O difícil é implementar.</p>
+
+    <ul class="lista">
+      <li>Pessoas resistem a mudanças</li>
+      <li>Nem todo mundo quer sair da zona de conforto</li>
+      <li>A ferramenta não resolve o problema sozinha</li>
+    </ul>
+
+    <div class="destaque">
+      <p>
+        Muitas empresas trocam de sistema sem mudar o processo. E o problema continua.
+        Só muda o nome da ferramenta.
+      </p>
+    </div>
+
+    <p class="body-text">
+      Sistema só funciona se as pessoas usarem. Você vai precisar ouvir feedback, adaptar fluxos,
+      simplificar e ajustar constantemente. <strong>Não existe sistema perfeito.</strong>
+      Existe sistema que funciona na prática.
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 07 ═════════════════════════════════════════════ -->
+  <div class="page-section page-section--alt" style="position:relative;">
+    <div class="chapter-num">07</div>
+    <div class="chapter-label">Capítulo 07</div>
+    <h2 class="chapter-title">📊<br><em>Resultados</em></h2>
+
+    <p class="body-text">
+      Com o sistema evoluindo, levei a ideia para a diretoria e presidência. Eles gostaram.
+      E pediram para acelerar.
+    </p>
+    <p class="body-text">
+      Em aproximadamente <strong>25 dias</strong>, a primeira versão estava pronta.
+      Começamos testando com uma obra. Depois mais quatro. E em poucas semanas,
+      toda a empresa estava utilizando.
+    </p>
+
+    <div class="insight-box">
+      <div class="insight-label">O impacto concreto</div>
+      <p class="insight-text">O Monday foi <span>cancelado.</span><br>O ClickUp não foi implantado.<br>O sistema interno virou o principal.</p>
+    </div>
+
+    <p class="body-text">
+      O impacto foi ainda maior porque estamos falando de uma construtora, onde o volume financeiro
+      e operacional é alto. Organizar esse fluxo trouxe mais controle, previsibilidade e segurança
+      nas decisões. <strong>Isso não foi teoria. Foi execução.</strong>
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 08 ═════════════════════════════════════════════ -->
+  <div class="page-section" style="position:relative;">
+    <div class="chapter-num">08</div>
+    <div class="chapter-label">Capítulo 08</div>
+    <h2 class="chapter-title">💰 Transformando<br><em>em Negócio</em></h2>
+
+    <p class="body-text">
+      Foi nesse momento que a visão mudou novamente.
+    </p>
+
+    <div class="destaque">
+      <p>
+        Se funciona dentro de uma empresa... pode funcionar em outras.
+      </p>
+    </div>
+
+    <p class="body-text">
+      E assim nasceu o produto digital. Comecei a estruturar um ecossistema completo:
+    </p>
+
+    <ul class="lista">
+      <li>Aplicativo mobile</li>
+      <li>Painel de controle operacional</li>
+      <li>CRM e pipeline comercial</li>
+      <li>Módulo financeiro completo</li>
+      <li>Contratos e gestão de empresas</li>
+    </ul>
+
+    <p class="body-text">
+      Agora não era mais apenas um sistema interno. <strong>Era um negócio.</strong>
+    </p>
+  </div>
+
+  <!-- ═══ CAPÍTULO 09 ═════════════════════════════════════════════ -->
+  <div class="page-section page-section--alt" style="position:relative;">
+    <div class="chapter-num">09</div>
+    <div class="chapter-label">Capítulo 09</div>
+    <h2 class="chapter-title">🎯 O Método<br><em>DPP</em></h2>
+
+    <p class="body-text">
+      Tudo isso pode ser resumido em um método estruturado e aplicável — desenvolvido a partir
+      de experiência real, não de teoria. Um método para profissionais, gestores e empreendedores
+      que querem enxergar gargalos, organizar fluxos e transformar problemas em soluções.
+    </p>
+
+    <div class="method-steps">
+      <div class="method-step">
+        <div class="ms-num">01</div>
+        <div>
+          <div class="ms-title">Diagnosticar o Gargalo Real</div>
+          <div class="ms-desc">Identifique onde está a dor operacional. O problema que custa mais caro em tempo, dinheiro ou decisão.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="ms-num">02</div>
+        <div>
+          <div class="ms-title">Mapear o Processo Real</div>
+          <div class="ms-desc">Não como deveria funcionar. Como realmente acontece — com todos os desvios, gambiarras e dependências ocultas.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="ms-num">03</div>
+        <div>
+          <div class="ms-title">Definir o Fluxo Estruturado</div>
+          <div class="ms-desc">Um único ponto de entrada. Uma sequência clara. Responsável definido em cada etapa.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="ms-num">04</div>
+        <div>
+          <div class="ms-title">Resolver um Gargalo por Vez</div>
+          <div class="ms-desc">Comece pelo problema mais crítico. Valide antes de escalar para o resto da operação.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="ms-num">05</div>
+        <div>
+          <div class="ms-title">Validar com Quem Usa</div>
+          <div class="ms-desc">O feedback de quem usa é o dado mais importante. Ele define o que fica e o que muda.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="ms-num">06</div>
+        <div>
+          <div class="ms-title">Iterar com Base na Prática</div>
+          <div class="ms-desc">Refine. Ajuste. Melhore. A solução evolui com o uso — não na teoria.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="ms-num">07</div>
+        <div>
+          <div class="ms-title">Transformar em Produto ou Processo</div>
+          <div class="ms-desc">Da solução interna ao ativo replicável — um processo, um sistema ou um negócio.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PRÓXIMO PASSO ═══════════════════════════════════════════ -->
+  <div class="page-section">
+    <div class="chapter-label">Próximo Passo</div>
+    <h2 class="chapter-title">Transforme<br><em>seu Negócio</em></h2>
+
+    <p class="body-text">
+      Se você chegou até aqui, provavelmente já sabe onde está o caos.
+      Agora é sobre estrutura — transformar o problema em processo, e o processo em solução.
+      <strong>O Método DPP é o caminho.</strong> E o próximo passo é você escolher como quer percorrê-lo.
+    </p>
+
+    <div class="proximo-passo">
+      <div class="pp-title">Seu próximo passo<br><span style="color:var(--orange)">no Método DPP</span></div>
+      <p class="pp-desc">
+        O ebook é a base. Para quem quer ir além — com acompanhamento estruturado
+        ou uma solução aplicada diretamente na sua operação.
+      </p>
+
+      <div class="pp-options">
+        <div class="pp-option">
+          <div class="pp-icon">🚀</div>
+          <div>
+            <div class="pp-option-title">Curso — Método DPP na Prática</div>
+            <div class="pp-option-desc">Aprenda a identificar gargalos, estruturar fluxos e construir soluções digitais com apoio da IA. Do diagnóstico ao produto.</div>
+          </div>
+        </div>
+        <div class="pp-option">
+          <div class="pp-icon">⚙️</div>
+          <div>
+            <div class="pp-option-title">Diagnóstico Operacional</div>
+            <div class="pp-option-desc">Conversa estratégica para mapear os gargalos da sua operação e estruturar o caminho mais aplicável para o seu contexto.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-wrap">
+        <a href="https://pay.hotmart.com/O105466115V" class="btn-pp" target="_blank" rel="noopener">
+          Acessar o Curso →
+        </a>
+        <a href="https://calendly.com/josericardovj/demonstracao-fluxy"
+           class="btn-pp-amber" target="_blank" rel="noopener">
+          Agendar diagnóstico operacional →
+        </a>
+        <span class="btn-note">Dúvidas: ricardoviljunior@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+
+</div><!-- /page-wrap -->
+</body>
+</html>

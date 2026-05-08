@@ -1,0 +1,41 @@
+---
+---
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">MÉTODO <em>DPP</em></div>
+    <p class="footer-copy">© {new Date().getFullYear()} Jose Ricardo · Curso Método DPP — Do Caos ao Sistema</p>
+    <div class="footer-links">
+      <a href="/#comprar">Comprar o Curso</a>
+      <span>·</span>
+      <a href="/blog">Blog</a>
+      <span>·</span>
+      <a href="mailto:ricardoviljunior@gmail.com">ricardoviljunior@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 36px 24px;
+    text-align: center;
+  }
+  .footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .footer-brand {
+    font-family: var(--font-display); font-size: 1.4rem;
+    letter-spacing: 0.1em; color: var(--muted);
+  }
+  .footer-brand em { color: var(--orange); font-style: normal; }
+  .footer-copy {
+    font-family: var(--font-cond); font-size: 0.74rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint);
+  }
+  .footer-links {
+    font-family: var(--font-cond); font-size: 0.74rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;
+  }
+  .footer-links a { color: var(--faint); text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: var(--orange); }
+</style>

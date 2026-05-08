@@ -1,0 +1,99 @@
+---
+interface Props {
+  variant?: 'mid' | 'end';
+}
+const { variant = 'mid' } = Astro.props;
+---
+
+<div class:list={['course-ad', `course-ad--${variant}`]}>
+  <div class="course-ad-inner">
+    <div class="course-ad-left">
+      <div class="course-ad-tag">◆ Curso · Método DPP</div>
+      <div class="course-ad-title">
+        {variant === 'end'
+          ? 'Pronto para sair do caos para o controle?'
+          : 'Aprenda o método completo'}
+      </div>
+      <p class="course-ad-desc">
+        {variant === 'end'
+          ? 'O Método DPP foi validado em operação real — do diagnóstico ao produto digital, sem programação. 7 dias de garantia.'
+          : 'Do diagnóstico de gargalos à construção de um sistema digital funcional. Validado em operação real na construção civil.'}
+      </p>
+    </div>
+    <div class="course-ad-right">
+      <div class="course-ad-price">R$ 197,00</div>
+      <div class="course-ad-price-sub">pagamento único · acesso imediato</div>
+      <a
+        href="https://pay.hotmart.com/O105466115V"
+        class="course-ad-btn"
+        target="_blank"
+        rel="noopener"
+      >
+        {variant === 'end' ? 'Garantir acesso agora →' : 'Quero aprender o método →'}
+      </a>
+      <div class="course-ad-guarantee">🛡️ 7 dias de garantia incondicional</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .course-ad {
+    background: linear-gradient(135deg, #1a0a00 0%, #0f0f0f 100%);
+    border: 1px solid rgba(245,108,0,0.25);
+    border-left: 4px solid var(--orange);
+    border-radius: 4px;
+    padding: 28px 28px;
+    margin: 40px 0;
+  }
+  .course-ad--end {
+    border-left-color: var(--amber);
+    background: linear-gradient(135deg, #100800 0%, #0d0d0d 100%);
+  }
+  .course-ad-inner {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 28px; align-items: center;
+  }
+  @media (max-width: 600px) {
+    .course-ad-inner { grid-template-columns: 1fr; }
+  }
+  .course-ad-tag {
+    font-family: var(--font-cond); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 8px;
+  }
+  .course-ad-title {
+    font-family: var(--font-display); font-size: 1.6rem;
+    letter-spacing: 0.03em; color: #fff; margin-bottom: 8px; line-height: 1;
+  }
+  .course-ad-desc {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.6; font-family: var(--font-body);
+  }
+  .course-ad-right {
+    text-align: center; min-width: 180px;
+  }
+  .course-ad-price {
+    font-family: var(--font-display); font-size: 2.4rem;
+    color: var(--orange); line-height: 1; margin-bottom: 2px;
+  }
+  .course-ad-price-sub {
+    font-family: var(--font-cond); font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--faint); margin-bottom: 14px;
+  }
+  .course-ad-btn {
+    display: block; background: var(--orange); color: #fff;
+    font-family: var(--font-cond); font-size: 0.88rem;
+    font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 12px 20px; border-radius: 3px; text-decoration: none;
+    text-align: center; transition: opacity 0.15s;
+    box-shadow: 0 4px 20px rgba(245,108,0,0.35);
+    margin-bottom: 10px;
+  }
+  .course-ad-btn:hover { opacity: 0.88; }
+  .course-ad-guarantee {
+    font-family: var(--font-cond); font-size: 0.66rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint);
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+const navLinks = [
+  { href: '/', label: 'Início' },
+  { href: '/blog', label: 'Blog' },
+];
+const currentPath = Astro.url.pathname;
+---
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo">MÉTODO <em>DPP</em></a>
+    <nav>
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={['nav-link', { active: currentPath === link.href || (link.href === '/blog' && currentPath.startsWith('/blog')) }]}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href="/#comprar" class="nav-cta">Comprar o Curso</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    background: rgba(13,13,13,0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid #272727;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 960px; margin: 0 auto;
+    padding: 0 24px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-family: var(--font-display); font-size: 1.25rem;
+    letter-spacing: 0.1em; color: #fff; text-decoration: none;
+  }
+  .logo em { color: var(--orange); font-style: normal; }
+  nav { display: flex; align-items: center; gap: 28px; }
+  .nav-link {
+    font-family: var(--font-cond); font-size: 0.82rem;
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-link:hover, .nav-link.active { color: #fff; }
+  .nav-cta {
+    font-family: var(--font-cond); font-size: 0.82rem;
+    font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--orange); color: #fff;
+    padding: 8px 18px; border-radius: 3px; text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.88; }
+  @media (max-width: 560px) {
+    .nav-link { display: none; }
+    .nav-cta { font-size: 0.75rem; padding: 7px 14px; }
+  }
+</style>
