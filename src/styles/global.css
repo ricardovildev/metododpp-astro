@@ -5,10 +5,10 @@
   --bg2:     #121212;
   --bg3:     #171717;
   --surface: #1c1c1c;
-  --border:  #272727;
-  --text:    #ffffff;
-  --muted:   #c8c8c8;
-  --faint:   #787878;
+  --border:  #2e2e2e;
+  --text:    #f0f0f0;
+  --muted:   #d0d0d0;
+  --faint:   #909090;
   --orange:  #f56c00;
   --amber:   #f5a800;
   --radius:  3px;
@@ -26,7 +26,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.75;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
