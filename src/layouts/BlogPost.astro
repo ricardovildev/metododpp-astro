@@ -17,6 +17,27 @@ interface Props {
 
 const { title, description, pubDate, category, tags = [], image, cta = 'course' } = Astro.props;
 
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'Jose Ricardo',
+    jobTitle: 'Estrategista em Processos, Sistemas e IA Aplicada',
+    url: 'https://metododpp.site',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Método DPP',
+    url: 'https://metododpp.site',
+  },
+  inLanguage: 'pt-BR',
+  ...(image && { image }),
+};
+
 const formattedDate = pubDate.toLocaleDateString('pt-BR', {
   day: 'numeric',
   month: 'long',
@@ -26,7 +47,7 @@ const formattedDate = pubDate.toLocaleDateString('pt-BR', {
 const readingTimeWords = 200; // estimativa, pode ser calculada dinamicamente
 ---
 
-<Base title={`${title.length > 60 ? title.slice(0, 57) + '...' : title} | Método DPP`} description={description} ogImage={image}>
+<Base title={`${title.length > 60 ? title.slice(0, 57) + '...' : title} | Método DPP`} description={description} ogImage={image} schema={blogSchema}>
   <Header />
 
   <div class="article-hero">

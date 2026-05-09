@@ -1,10 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const courseSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: 'Curso Método DPP — Do Caos ao Sistema',
+  description: 'Aprenda a diagnosticar gargalos, estruturar processos e construir soluções digitais do zero. Validado em operação real na construção civil.',
+  provider: {
+    '@type': 'Person',
+    name: 'Jose Ricardo',
+    jobTitle: 'Estrategista em Processos, Sistemas e IA Aplicada',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '197.00',
+    priceCurrency: 'BRL',
+    availability: 'https://schema.org/InStock',
+    url: 'https://pay.hotmart.com/O105466115V',
+  },
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'online',
+    inLanguage: 'pt-BR',
+  },
+};
 ---
 
 <Base
   title="Curso Método DPP — Do Caos ao Sistema | Jose Ricardo"
   description="Aprenda a diagnosticar gargalos, estruturar processos e construir soluções digitais do zero. O Curso Método DPP por Jose Ricardo — validado em operação real."
+  schema={courseSchema}
 >
 
 <style is:global>
