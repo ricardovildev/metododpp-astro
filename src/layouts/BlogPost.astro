@@ -26,7 +26,7 @@ const formattedDate = pubDate.toLocaleDateString('pt-BR', {
 const readingTimeWords = 200; // estimativa, pode ser calculada dinamicamente
 ---
 
-<Base title={`${title} — Blog Método DPP`} description={description} ogImage={image}>
+<Base title={`${title.length > 60 ? title.slice(0, 57) + '...' : title} | Método DPP`} description={description} ogImage={image}>
   <Header />
 
   <div class="article-hero">

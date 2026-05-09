@@ -200,8 +200,7 @@ import Base from '../layouts/Base.astro';
           <div class="mockup-wrap">
             <div class="mockup-bar"><div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-url">sistema.operacao / dashboard</div></div>
             <div class="mockup-screen">
-              <img src="/assets/images/dashboard.png" alt="Dashboard do sistema operacional" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="display:block"/>
-              <div class="mockup-fallback" style="display:none"><div class="mockup-fallback-icon">📊</div><div class="mockup-fallback-label">Dashboard Operacional</div></div>
+              <div class="mockup-fallback" style="display:flex"><div class="mockup-fallback-icon">📊</div><div class="mockup-fallback-label">Dashboard Operacional</div></div>
               <div class="mockup-stats">
                 <div class="mstat"><div class="mstat-n">25</div><div class="mstat-l">Dias de implantação</div></div>
                 <div class="mstat"><div class="mstat-n">100%</div><div class="mstat-l">Adoção</div></div>
@@ -399,6 +398,7 @@ import Base from '../layouts/Base.astro';
     document.querySelectorAll('.faq-q').forEach(q => {
       q.addEventListener('click', () => {
         const item = q.parentElement;
+        if (!item) return;
         const open = item.classList.contains('open');
         document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
         if (!open) item.classList.add('open');
